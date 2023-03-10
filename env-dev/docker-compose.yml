@@ -21,7 +21,7 @@ services:
      - 443:443
     volumes:
      - ./symfony:/var/www/symfony
-     - ./env-pro/.env:/var/www/symfony/.env
+     - ./env-dev/.env:/var/www/symfony/.env
      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
      - /etc/letsencrypt:/etc/letsencrypt
     
