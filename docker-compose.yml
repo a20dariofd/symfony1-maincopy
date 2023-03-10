@@ -1,0 +1,35 @@
+version: "3"
+services:
+  bd:
+    image: mysql:latest
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+      - database:/var/lib/mysql
+    environment:
+      - "MYSQL_ROOT_PASSWORD=abc123.."
+      - "MYSQL_DATABASE=database"
+      - "MYSQL_USER=usuario"
+      - "MYSQL_USER_PASSWORD=clave"
+    ports: [3306]
+    labels:
+            com.symfony.server.service-prefix: 'DATABASE'
+    
+  web:
+    image: nginx:alpine
+    ports:
+     - 80:80
+     - 443:443
+    volumes:
+     - ./symfony:/var/www/symfony
+     - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+     - /etc/letsencrypt:/etc/letsencrypt
+    
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: php-fpm
+    volumes:
+     - ./symfony:/var/www/symfony
+volumes:
+  database:
